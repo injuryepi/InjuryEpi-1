@@ -1,4 +1,4 @@
-cond.new.diag <- function(data, expr, colvec, ignore.case = T, cond.var){
+create_cond_diag <- function(data, expr, colvec, ignore.case = T, cond.var){
   #regexp=regular expressions for the data
   # colvec = vector of the columns of interest (columns with the diagnoses)
   require(dplyr)
