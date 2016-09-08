@@ -1,0 +1,47 @@
+create_cond_hosp <- function(data, expr, colvec_1, colvec_m, ignore.case = T, cond.var){
+  # the arguments:
+  # data = the analytic dataser
+  # expr: the icd codes in regular expressions
+  # colvec_1 = the column number of the first ecode column
+  # colvec_m = the column numbers of all the ecode columns
+  # ignore.case = treat lower and upper cases similarly?
+  # cond.var= the variable ( a binary variable with 1 when present and 0 otherwise) that determine wether to look for other ecode fields or limit the search to only the main ecode.() 
+  
+  require(dplyr)
+  require(tidyr)
+  
+  cond.var2 <- eval(substitute(cond.var),data, parent.frame())
+  cond.var2 <- as.numeric(levels(cond.var2))[cond.var2]
+  
+  colvec_m2 <- c(colvec_1, colvec_m[which(colvec_m!=colvec_1)])
+  sel_m2 <- names(data)[colvec_m2]
+  sel_col <- 1:length(sel_m2)
+  
+  df2 <- as_data_frame(data[sel_m2]) %>% mutate_each(funs(as.character))
+
+  create_diag <- function(data, expr, colvec, ignore.case = T){
+    #regexp=regular expressions for the data
+    # colvec = vector of the columns of interest (columns with the diagnoses)
+    require(dplyr)
+    require(tidyr)
+    # select the variables of interest
+    sel <- names(data)[colvec]
+ 
+    # ensure they are all character vector
+    df <- as_data_frame(data[sel]) %>% mutate_each(funs(as.character))
+    
+    # a function to assign "1" if the regular expression matched or "0" otherwise 
+    f <- function(x) grepl(expr, x, ignore.case = ignore.case)+0
+    df <- sapply(df, f) 
+    df <- as_data_frame(df)  %>% mutate(new_diag = rowSums(., na.rm = TRUE)) %>% select(new_diag)
+    # the vector of the new variable (new diagnosis) to add to the data frame (data)
+    as.factor(as.numeric((df[,1] > 0))) 
+    
+  }
+  
+ 
+ df2 <- df2 %>% mutate(cond.var2 = cond.var2)
+ df2 <- df2 %>% mutate(new_var = ifelse(cond.var2 == 0, create_diag(., expr = expr, colvec = 1), create_diag(., expr = expr, colvec = sel_col) )) %>% select(new_var)
+ as.factor(as.numeric((df2[,1] > 1))) 
+  
+}
