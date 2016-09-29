@@ -1,0 +1,8 @@
+split_right <- function(x,pattern)
+{
+#to keep right of the splitting pattern
+require(stringr)
+str_sub(x,str_locate(x,pattern)[,2]+1,-1)
+}
+
+#split_right(x=c("100.00","15.5"),pattern="\\.")
