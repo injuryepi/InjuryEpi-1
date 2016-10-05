@@ -1,5 +1,6 @@
-add_pct <- function(data, case, pop ,level=.95, s = 100 ,digit = 1, naming = "_pct")
-{
+add_pct <- function(data, case, pop ,level=.95, s = 100 ,digit = 1, naming = "_pct"){
+  # case: numerator column number
+  # pop: denominator column number
   require(dplyr, quietly = T)
   x <- data[, case] 
   n <- data[, pop]
