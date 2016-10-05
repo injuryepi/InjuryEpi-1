@@ -1,4 +1,4 @@
 calc_age_adj <- function(count, pop, stdpop = us2000std_pop[,2], s = 100000, r = 1){
-  require(epitools)
+  require(epitools, quietly = T)
   round(epitools::ageadjust.direct(count = count, pop = pop, stdpop = stdpop)*s, r)
 }
