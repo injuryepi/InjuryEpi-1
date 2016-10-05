@@ -1,8 +1,8 @@
 create_cond_diag <- function(data, expr, colvec, ignore.case = T, cond.var){
   #regexp=regular expressions for the data
   # colvec = vector of the columns of interest (columns with the diagnoses)
-  require(dplyr)
-  require(tidyr)
+  require(dplyr, quietly = T)
+  require(tidyr, quietly = T)
   
   cond.var2 <- eval(substitute(cond.var),data, parent.frame())
   fac2num <- function(f) as.numeric(levels(f))[f]
