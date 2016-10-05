@@ -7,8 +7,8 @@ create_cond_hosp <- function(data, expr, colvec_1, colvec_m, ignore.case = T, co
   # ignore.case = treat lower and upper cases similarly?
   # cond.var= the variable ( a binary variable with 1 when present and 0 otherwise) that determine wether to look for other ecode fields or limit the search to only the main ecode.() 
   
-  require(dplyr)
-  require(tidyr)
+  require(dplyr, quietly = T)
+  require(tidyr, quietly = T)
   
   cond.var2 <- eval(substitute(cond.var),data, parent.frame())
   cond.var2 <- as.numeric(levels(cond.var2))[cond.var2]
@@ -22,8 +22,7 @@ create_cond_hosp <- function(data, expr, colvec_1, colvec_m, ignore.case = T, co
   create_diag <- function(data, expr, colvec, ignore.case = T){
     #regexp=regular expressions for the data
     # colvec = vector of the columns of interest (columns with the diagnoses)
-    require(dplyr)
-    require(tidyr)
+
     # select the variables of interest
     sel <- names(data)[colvec]
  
