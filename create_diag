@@ -1,8 +1,8 @@
 create_diag <- function(data, expr, colvec, ignore.case = T){
   #regexp=regular expressions for the data
   # colvec = vector of the columns of interest (columns with the diagnoses)
-  require(dplyr)
-  require(tidyr)
+  require(dplyr, quietly = T)
+  require(tidyr, quietly = T)
   # select the variables of interest
   sel <- names(data)[colvec]
   
