@@ -1,4 +1,5 @@
 add_smr <- function(dat, cols, digit = 2, naming = "_smr"){
+require(epiR, quietly = T)
   dat_smr <- round(epiR::epi.conf(as.matrix(dat[, cols]), ctype = "smr"), digits = digit)
   dat_smr <-  subset(dat_smr, select = -se)
   names(dat_smr) <- paste0(names(dat_smr),naming)
