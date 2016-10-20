@@ -1,6 +1,7 @@
 create_cond_diag <- function(data, expr, colvec, ignore.case = T, cond.var){
-  #regexp=regular expressions for the data
-  # colvec = vector of the columns of interest (columns with the diagnoses)
+  # expr=regular expressions of interest
+  # colvec = vector of the columns of interest (columns with the diagnosis code)
+  # cond.var = the conditional column with 0 and 1
   require(dplyr, quietly = T)
   require(tidyr, quietly = T)
   
