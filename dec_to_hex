@@ -1,0 +1,7 @@
+dec_to_hex <- function(x) {
+  # x = a numeric value (base 10) to transform to hex number
+  library(stringr)
+  h <- sprintf("0x%X",as.numeric(x))
+  h <- str_sub(h, 3)
+  h
+}
