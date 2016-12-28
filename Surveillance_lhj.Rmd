@@ -1,0 +1,341 @@
+---
+title: "Opioid Overdose Surveillance"
+author: "Mamadou Ndiaye, Epidemiologist"
+date: "December 13, 2016"
+output: 
+  flexdashboard::flex_dashboard:
+    storyboard: true
+    # social: menu
+    #logo: "C:/Users/mxn2303/Documents/travail_temp/TAC/Fig/nw_counties.png"
+    # source: embed
+    theme: readable
+    source: embed
+    css: style.css
+# css: styles.css
+logo: DohWebSmall158_blueTransparent.gif
+---
+
+
+```{r setup, include=FALSE}
+
+options(scipen = 12)
+knitr::opts_chunk$set(
+  echo    = FALSE,
+  comment = NA,
+  message = FALSE,
+  error   = FALSE)
+
+library(flexdashboard)
+library(shiny)
+library(tidyverse)
+# library(pander)
+library(DT)
+library(plotly)
+library(leaflet)
+# library(SOAR)
+# library(dplyr)
+# library(Hmisc)
+# load("H:/PDO/.R_Cache/new.diag@.RData")
+# load("H:/PDO/.R_Cache/ems_pdo@.RData")
+
+load("Y:/Confidential/HSQA/CHS/IVP-Epi/LHJ/.R_Cache/opi_1516m@.RData")
+load("Y:/Confidential/HSQA/CHS/IVP-Epi/LHJ/.R_Cache/d16drugs_co_n@.RData")
+load("Y:/Confidential/HSQA/CHS/IVP-Epi/LHJ/.R_Cache/hosp_d16drugs_co_n@.RData")
+load("Y:/Confidential/HSQA/CHS/IVP-Epi/LHJ/.R_Cache/gp_drugs_fent_1@.RData")
+load("Y:/Confidential/HSQA/CHS/IVP-Epi/LHJ/.R_Cache/co_drug_leaf@.RData")
+#wa_counties2
+
+```
+
+
+### Overview 
+
+
+  
+ 1. Fatal overdose surveillance  
+
+ 2. Non-fatal overdose surveillance   
+
+ 3. Data Sharing 
+ 
+ 
+
+
+### I. Surveillance Components  
+
+1. Data Sources   
+
+2. Case Definitions  
+
+3. Data management and analyses  
+
+4. Data dissemination for prevention
+
+*** 
+
+"**Public health surveillance** is the ongoing, systematic collection, analysis, and interpretation of health data, essential to the planning, implementation and evaluation of public health practice, closely integrated with the dissemination of these data to those who need to know and linked to prevention and control -- CDC"
+
+```{r}
+tags$br()
+
+```
+
+"A **case definition** is a set of uniform criteria used to define a disease for public health surveillance.  Case definitions enable public health to classify and count cases *consistently across reporting jurisdictions*, and should not be used by healthcare providers to determine how to meet an individual patient’s health needs -- CDC/NNDSS"
+
+
+
+### II. Overdose Mortality: Potential Data Sources for Surveillance   
+
+
+- Death Certificate
+
+- Medical Examiners / Coroners   
+
+- Law enforcement
+
+- State labs / Toxicology  
+
+- Fatality Review    
+
+
+***
+
+- Presently only death certificate data are systematically used for surveillance of Fatal drug overdose   
+
+- e.g., Wisconsin has initiated Fatality Review of drug overdose in selected counties  
+
+
+
+### III. Overdose Mortality: Data management   
+
+
+```{r}
+
+tags$br()
+tags$br()
+
+```
+
+ Washington State Violence Death Reporting System (WA-VDRS) collecting:
+ 
+ - Death certificate  
+ 
+ - Medical Examiner/Coroner reports  
+ 
+ - Law enforcement  
+ 
+ - Toxicology  
+
+
+***
+
+- Presently WA-VDRS is collecting violent deaths (suicide, homicide,legal intervention, firearms and undetermined intent) from 14 counties
+
+- Adding Drug Overdose Module would include all drug overdose deaths  
+
+
+- WA-VDRS is expanding to cover the whole State
+
+
+
+### IV. Surveillance: Non-Fatal Overdose    
+
+
+1. EMS through Washington EMS information Systems (WEMSIS) 
+
+2. ED  
+  
+  - EDIE (ED Information Exchange)   
+  
+  - Syndromic Surveillance: NSSP/ESSENCE (National Syndromic Surveillance Program)
+  
+3. Inpatient discharge (CHARS)
+  
+4. WA Poisoning Center (WAPC)
+
+5. PDMP (Prescription Drug Monitoring Program)
+
+
+***  
+
+**[EDIE](http://collectivemedicaltech.com/what-we-do-2/edie-option-2/)** assists coordinating care management accross Emergency Departments. It may be possible to obtain a quarterly counts of drug overdose at the state level
+
+```{r}
+tags$br()
+
+```
+
+- DOH **RHINO**(Rapid Health Information NetwOrk) is working to improve reporting and data transfer to NSSP/ESSENCE and coordinate access authorization    
+
+- The ED data available in the NSSP Platform are still very low for meaningful surveillance (only 3 hospitals)  
+
+```{r}
+tags$br()
+
+```
+**CHARS** has started to provide provisional data for the current year allowing the analysis of drug overdose with the [ICD-10-CM Provisional Transition Guidance](https://github.com/epinotes/InjuryEpi/blob/master/ICD-10-CM%20Provisional%20Transition%20Guidance.pdf)
+
+```{r}
+tags$br()
+
+```
+
+**[Washington Poisoning Center](http://www.wapc.org/)** 
+
+
+```{r}
+tags$br()
+
+``` 
+**PDMP** has its own collaboration process with the LHJ. There will be coordination with the overall opioid surveillance. 
+
+
+
+
+
+
+### V. Non Fatal Overdose: EMS with WEMSIS    
+
+![WEMSIS](wemsis_screen.png)  
+
+***
+
+1. This screenshot shows ImageTrend Report Writer for query and export of selected variables for analysis of WEMSIS Data  
+
+2. CDC grant for Drug overdose Prevention for States supports WA **Rapid Response Project(RRP)**
+
+3. The RRP aims to improve  
+
+  - The local EMS agencies' standardized reporting of drug overdoses  
+  
+  - The case definition (clinical and substance description) to identify drug overdose  
+  
+  - The documentation of care management (including naloxone administration) and outcome of overdose victims
+
+
+
+### VI. Data Sharing  
+
+
+1. Indicators  
+
+   Reporting cycle of indicators (e.g., drug types, age, sex, race) to be determined with LHJ input
+   
+   Emphasize high burden communities
+
+
+2. Potential Distribution Platforms  
+
+  - [Washington Tracking Network](http://www.doh.wa.gov/DataandStatisticalReports/EnvironmentalHealth/WashingtonTrackingNetworkWTN)    
+  
+  - [Data.WA.gov](https://data.wa.gov/)  
+  
+  - Community Health Assessment Tool  
+  
+  - Consider [Shiny](https://shiny.rstudio.com/gallery/) and [Github](https://github.com/) for fast and efficient data sharing and collaboration   
+
+***  
+
+
+
+### VII. Data example: 2016 Washington State Fatal Drug Overdose   
+
+
+
+
+```{r}  
+
+ggplotly(opi_1516m)
+
+```
+
+
+***
+
+**Monthly Comparison of 2015-2016 Opioid Deaths**
+
+*Unless otherwise indicated the statistics are based on the [CDC definition](https://github.com/epinotes/InjuryEpi/blob/master/PfS%20Required%20Indicators%20with%20Code.pdf)*
+
+```{r}
+tags$br()
+
+```
+The 2016 data were updated through the first week of December. The low count in the second half of 2016 reflects the lag in reporting the final ICD-10 codes of the cause of death.
+
+The opioid death counts are similar between 2015(**371**) and 2016(**382**) in the first half of the year.  
+
+### VIII. Data example: 2016 Counties Fatal Drug Overdose  
+
+```{r}
+datatable(d16drugs_co_n)
+
+```
+
+***
+
+**2016 Drug and Opioid Death by county**
+*(Type in the search box to quickly find a county)*
+
+```{r}
+tags$br()
+
+```
+Although the data include November deaths, the data are not finalized for the year. 
+
+
+### IX. Data example: Fentanyl-Related Deaths    
+
+
+```{r}
+
+ggplotly(gp_drugs_fent_1)
+
+```
+
+***
+
+**2006-2016 Fentanyl Deaths**
+```{r}
+tags$br()
+
+```
+ 
+ The coded underlying cause of death by drug doesn't not always capture death certificate text. So far in 2016, **11** of the **49** deaths were coded as *“R99(Ill-defined and unknown cause of mortality)”*
+
+
+   
+
+### X. Data example: 2016 Washington State Fatal Drug Overdose county maps  
+
+```{r}
+co_drug_leaf
+
+```
+
+
+
+
+
+### XI. Data example: First half of 2016 Inpatient Discharges from Drug Poisoning  
+
+```{r}
+datatable(hosp_d16drugs_co_n)
+
+```
+
+
+***
+
+**First Half of 2016 Inpatient Drug Overdose by county**
+
+
+```{r}
+tags$br()
+
+```
+The inpatient cases of drug overdose were identified following the 
+[ICD-10-CM Provisional Transition Guidance](https://github.com/epinotes/InjuryEpi/blob/master/ICD-10-CM%20Provisional%20Transition%20Guidance.pdf)  
+
+
+ Of the **2503** drug poisoning inpatient discharges, **606** were opioid-related as the main diagnosis and **746** from any of the diagnosis field. **The county table is based on the latter**. 
+
