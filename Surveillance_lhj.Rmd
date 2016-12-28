@@ -28,22 +28,15 @@ knitr::opts_chunk$set(
 library(flexdashboard)
 library(shiny)
 library(tidyverse)
-# library(pander)
 library(DT)
 library(plotly)
 library(leaflet)
-# library(SOAR)
-# library(dplyr)
-# library(Hmisc)
-# load("H:/PDO/.R_Cache/new.diag@.RData")
-# load("H:/PDO/.R_Cache/ems_pdo@.RData")
 
 load("IVP-Epi/LHJ/.R_Cache/opi_1516m@.RData")
 load("IVP-Epi/LHJ/.R_Cache/d16drugs_co_n@.RData")
 load("IVP-Epi/LHJ/.R_Cache/hosp_d16drugs_co_n@.RData")
 load("IVP-Epi/LHJ/.R_Cache/gp_drugs_fent_1@.RData")
 load("IVP-Epi/LHJ/.R_Cache/co_drug_leaf@.RData")
-#wa_counties2
 
 ```
 
