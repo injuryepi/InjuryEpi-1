@@ -1,0 +1,6 @@
+create_fiscal_year <- function(date){
+  #july 1, year_n to june30, year_n+1
+require(lubridate, quietly = T)
+stopifnot(is.Date(date))
+year(date %m+% months(6))
+}
