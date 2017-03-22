@@ -1,13 +1,19 @@
-hinequality <-function (rates, pop, type = c("hineq","rd","rr","bgv","idisp","mld", "theil", "gini")) 
-{
-  rd <- function(r){
+hinequality <-function (rates, pop, type = c("hineq","rd","rr","bgv","idisp","mld", "theil", "gini")) {
+
+require(laeken)
+require(tibble)
+
+# Range Difference (RD)
+rd <- function(r){
   diff(range(r))
 }
-##
+
+# Range Ratio (RR)
 rr <- function(r){
  max(r)/min(r)
 }
 
+# Between-Group Variance (BGV)
 bgv <- function(r,p){
   p=p/sum(p)
   mu=sum(r*p)
@@ -15,14 +21,12 @@ bgv <- function(r,p){
   b
 }
 
-###
-
+# Index of Disparity (IDisp)
 idisp <- function(r){
  100*(sum((r-min(r))/(length(r)-1))/min(r))
 }
 
-###
-
+# Mean Log Deviation (MLD)
 mld <- function(r,p){
   p=p/sum(p)
   mu=sum(r*p)
@@ -31,8 +35,7 @@ mld <- function(r,p){
  m
 }
 
-
-##
+# Theil Index (T) 
 theil <- function(r,p){
   p=p/sum(p)
   mu=sum(r*p)
@@ -41,14 +44,15 @@ theil <- function(r,p){
  t
 }
 
-## 
+# Gini Coefficient
 gini2 <- function(r,p){
-  require(laeken)
+  
   p= p/sum(p)
-  g = gini(r,p)
+  g = laeken::gini(r,p)
   unlist(g)
 }
 
+# wrap up of all the measures
 hineq <- function(r,p){
 
 disp <- c(rd(r=rates),bgv(r=rates,p=pop),rr(r=rates),idisp(r=rates),mld(r=rates,p=pop), theil(r=rates,p=pop), gini2(r=rates,p=pop))
