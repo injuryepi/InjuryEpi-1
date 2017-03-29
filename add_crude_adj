@@ -1,10 +1,18 @@
 add_crude_adj <- function(x, y){
 	
-	require(foreach)
-	require(epiR)
+	require(foreach, quietly = T)
+	require(epiR, quietly = T)
 	require(tidyverse)
 	
 	# crude rates	
+	
+	add_inc_rate <- function(dat, case,pop, digit = 1, naming = "_crude_rate", method = "exact", s = 100000){
+    dat_inc.rate <- round(epiR::epi.conf(as.matrix(dat[, c(case,pop)]), ctype = "inc.rate", method = method)*s, digits = digit)
+  #dat_inc.rate <-  subset(dat_inc.rate, select = -se)
+  names(dat_inc.rate) <- paste0(names(dat_inc.rate),naming)
+  dat_inc.rate <- dplyr::bind_cols(dat, dat_inc.rate)
+  dat_inc.rate
+      }
 	dat_a0 <- x %>% group_by(year) %>% summarise_each(funs(sum), count, pop)
 	a <- grep("count|pop", names(dat_a0))
 	dat_a0 <- add_inc_rate(dat_a0, case = a[1], pop = a[2])
