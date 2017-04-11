@@ -1,0 +1,264 @@
+---
+title: "WA 2011-2016 Drug Overdose Hospitalization"
+author: "Mamadou Ndiaye, Epidemiologist, WA DOH"
+output:
+  bookdown::html_document2:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+css: tufte2.css
+---
+
+
+```{r, echo=F,message=FALSE, warning=FALSE}  
+
+
+library(tidyverse)
+library(haven)
+library(forcats)
+library(caret)
+library(Hmisc)
+library(purrr)
+library(knitr)
+library(pander)
+library(injuryepi)
+library(highcharter)
+library(forecast)
+#library(ggplot2)
+
+load("Y:/Confidential/HSQA/CHS/IVP-Epi/CHARS/.R_Cache/chars_pub2015diag_q4@.RData")
+load("Y:/Confidential/HSQA/CHS/IVP-Epi/CHARS/.R_Cache/chars_pub2015diag_f@.RData")
+load("Y:/Confidential/HSQA/CHS/IVP-Epi/CHARS/.R_Cache/chars_2016@.RData")
+load("Y:/Confidential/HSQA/CHS/IVP-Epi/CHARS/.R_Cache/mat@.RData")
+load("Y:/Confidential/HSQA/CHS/IVP-Epi/CHARS/.R_Cache/mat_op@.RData")
+load("Y:/Confidential/HSQA/CHS/IVP-Epi/CHARS/.R_Cache/mat_nhop@.RData")
+load("Y:/Confidential/HSQA/CHS/IVP-Epi/CHARS/.R_Cache/mat_hero@.RData")
+
+
+
+# SOAR::Attach()
+
+options(scipen = 12)
+knitr::opts_chunk$set(
+  echo    = TRUE,
+  comment = NA,
+  message = FALSE,
+  error   = FALSE,
+  warning = FALSE)
+
+```  
+
+  The introduction of ICD-10 CM in October 2015 and the use of CDC proposed definitions may have artificially lead to an apparent steeper decrease of drug overdose. However a time series decomposition from 2011 to 2016 showed seasonal effects that manifested in a lower incidence of drug overdose in the first and fourth quaters over the years.  
+  In addition this document contrast the results between using the principal diagnosis only and any diagnosis field when capturing the opioid overdose codes for 2016. 
+
+# Finding All Drug Overdose  
+
+
+Based on the ICD-10 CM **T36-T50** in the principal diagnosis 
+
+```{r eval=F, echo=F}
+library(tidyverse)
+source("https://raw.githubusercontent.com/epinotes/InjuryEpi/master/add_drug_10cm")
+source("https://raw.githubusercontent.com/epinotes/InjuryEpi/master/create_cond_diag")
+source("https://raw.githubusercontent.com/epinotes/InjuryEpi/master/create_diag")
+
+```
+
+
+```{r, eval = F}
+
+library(injuryepi)
+chars_2016 <- chars_2016 %>% add_drug_10cm(., uid = "seq_no", main = "diag1")
+
+```
+ __The results by quarters__:
+
+```{r, echo=F}
+
+pander(filter(chars_2016, drugs == 1) %>% group_by(quarters) %>% count,justify = "left")
+
+```  
+
+
+# Finding All Opioid Overdose
+
+Based on `.opioid_10cm = "^T40[01234]X|^T406[09]"`
+
+## Opioid Principal Diagnosis Only  
+
+
+```{r, eval=F}
+chars_2016 <- chars_2016 %>% mutate(opioid = create_cond_diag(.,expr = .opioid_10cm, colvec = 79, cond.var = drugs))
+
+```
+Count of opioid as main diagnosis by quarters:
+
+```{r, echo=F}
+pander(filter(chars_2016, opioid == 1) %>% group_by(quarters) %>% count,justify = "left")
+
+```
+
+## Opioid As any Diagnosis   
+
+```{r, eval=F}
+d_m <- grep("^diag[0-9]|^ecode[0-9]", names(chars_2016), value = F) 
+
+chars_2016 <- chars_2016 %>% mutate(opioid_m = create_cond_diag(.,expr = .opioid_10cm, colvec = d_m, cond.var = drugs))
+
+```
+Count of opioid as any diagnosis by quarters:
+
+```{r, echo=F}
+pander(filter(chars_2016, opioid_m == 1) %>% group_by(quarters) %>% count,justify = "left")
+
+```
+
+# Finding Non- Heroin Opioid Overdose
+
+Based on `.opioid_nh_10cm = "^T40[0234]X|^T406[09]"`
+
+## Non- Heroin Principal Diagnosis Only  
+
+
+```{r, eval=F}
+chars_2016 <- chars_2016 %>% mutate(opioid_nh = create_cond_diag(.,expr = .opioid_nh_10cm, colvec = 79, cond.var = drugs))
+
+```
+Count of Non-Heroin opioid as main diagnosis by quarters:
+
+```{r, echo=F}
+pander(filter(chars_2016, opioid_nh == 1) %>% group_by(quarters) %>% count,justify = "left")
+
+```
+
+## Non-Heroin Opioid As any Diagnosis   
+
+```{r, eval=F}
+d_m <- grep("^diag[0-9]|^ecode[0-9]", names(chars_2016), value = F) 
+
+chars_2016 <- chars_2016 %>% mutate(opioid_nh_m = create_cond_diag(.,expr = .opioid_nh_10cm, colvec = d_m, cond.var = drugs))
+
+```
+Count of non-heroin opioid as any diagnosis by quarters:
+
+```{r, echo=F}
+pander(filter(chars_2016, opioid_nh_m == 1) %>% group_by(quarters) %>% count,justify = "left")
+
+```
+
+# Finding All Heroin Overdose
+
+Based on `.heroin_10cm = "^T401X"`
+
+## heroin Principal Diagnosis Only  
+
+
+```{r, eval=F}
+chars_2016 <- chars_2016 %>% mutate(heroin = create_cond_diag(.,expr = .heroin_10cm, colvec = 79, cond.var = drugs))
+
+```
+Count of heroin as main diagnosis by quarters:
+
+```{r, echo=F}
+pander(filter(chars_2016, heroin == 1) %>% group_by(quarters) %>% count,justify = "left")
+
+```
+
+## heroin As any Diagnosis   
+
+```{r, eval=F}
+d_m <- grep("^diag[0-9]|^ecode[0-9]", names(chars_2016), value = F) 
+
+chars_2016 <- chars_2016 %>% mutate(heroin_m = create_cond_diag(.,expr = .heroin_10cm, colvec = d_m, cond.var = drugs))
+
+```
+Count of heroin as any diagnosis by quarters:
+
+```{r, echo=F}
+pander(filter(chars_2016, heroin_m == 1) %>% group_by(quarters) %>% count,justify = "left")
+
+```
+
+# Monthly Time Series Decomposition from 2011 to 2016  
+
+The decomposition of the time series was done with the R function `stl()`(Seasonal Decomposition of Time Series by Loess). It displays the _original series_, and its decomposition into _seasonal_, _trend(smoothed with loess)_ and _remainder_. 
+
+The graphs were produced with _R packages_ `ggplot2` and `highcharter`
+
+## Time series for all drugs  
+  
+
+### __with ggplot2__:  
+
+
+```{r}
+ggplot2::autoplot(stl(mat, s.window = "periodic", robust = TRUE))
+
+```  
+
+### __With highcharter__ (allowing interactivity):  
+
+```{r}  
+highcharter::hchart(stl(mat, s.window = "periodic", robust = TRUE))
+
+```
+
+
+
+## Time series for all opioids  
+ 
+### __with ggplot2__:  
+
+
+```{r echo=F}
+ggplot2::autoplot(stl(mat_op, s.window = "periodic", robust = TRUE))
+
+```  
+
+### __With highcharter__ : 
+
+
+```{r echo=F}  
+highcharter::hchart(stl(mat_op, s.window = "periodic", robust = TRUE))
+
+```  
+
+## Time series for non-heroin opioid  
+
+### __with ggplot2__:  
+
+
+```{r echo=F}
+ggplot2::autoplot(stl(mat_nhop, s.window = "periodic", robust = TRUE))
+
+```  
+### __With highcharter__ : 
+
+  
+
+```{r echo=F} 
+
+highcharter::hchart(stl(mat_nhop, s.window = "periodic", robust = TRUE))
+
+```
+
+## Time series for heroin 
+
+### __with ggplot2__:  
+
+
+```{r echo=F}
+ggplot2::autoplot(stl(mat_hero, s.window = "periodic", robust = TRUE))
+
+```  
+
+### __With highcharter__ : 
+
+ 
+  
+
+```{r echo=F} 
+
+highcharter::hchart(stl(mat_hero, s.window = "periodic", robust = TRUE))
+
+```

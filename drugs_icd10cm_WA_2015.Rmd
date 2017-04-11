@@ -1,0 +1,121 @@
+---
+title: "WA 2015 Drug Overdose Hospitalization"
+author: "Mamadou Ndiaye, Epidemiologist, WA DOH"
+output:
+  html_document: default
+  html_notebook: default
+css: tufte2.css
+---
+
+
+```{r, echo=F,message=FALSE, warning=FALSE}  
+
+
+library(tidyverse)
+library(haven)
+library(forcats)
+library(caret)
+library(Hmisc)
+library(purrr)
+library(knitr)
+library(pander)
+library(injuryepi)
+
+load("Y:/Confidential/HSQA/CHS/IVP-Epi/CHARS/.R_Cache/chars_pub2015diag_q4@.RData")
+load("Y:/Confidential/HSQA/CHS/IVP-Epi/CHARS/.R_Cache/chars_pub2015diag_f@.RData")
+
+
+
+
+# SOAR::Attach()
+
+options(scipen = 12)
+knitr::opts_chunk$set(
+  echo    = TRUE,
+  comment = NA,
+  message = FALSE,
+  error   = FALSE)
+
+```  
+
+## Finding All Drug Overdose  
+
+
+Based on the ICD-9 CM and ICD-10 CM (fourth quarter) in the principal diagnosis 
+
+
+The results by quarters:
+
+```{r}
+
+pander(filter(chars_pub2015diag_f, drugs == 1) %>% group_by(quarters) %>% count,justify = "left")
+
+```
+
+## Finding All Opioid Overdose
+
+
+
+### Opioid Principal Diagnosis Only  
+
+
+Count of opioid as main diagnosis by quarters:
+
+```{r, echo=F}
+pander(filter(chars_pub2015diag_f, opioid == 1) %>% group_by(quarters) %>% count,justify = "left")
+
+```
+
+### Opioid As any Diagnosis   
+
+
+Count of opioid as any diagnosis by quarters:
+
+```{r, echo=F}
+pander(filter(chars_pub2015diag_f, opioid_m == 1) %>% group_by(quarters) %>% count,justify = "left")
+
+```
+
+## Finding Non- Heroin Opioid Overdose
+
+
+### Non- Heroin Principal Diagnosis Only  
+
+
+Count of Non-Heroin opioid as main diagnosis by quarters:
+
+```{r, echo=F}
+pander(filter(chars_pub2015diag_f, opioid_nh == 1) %>% group_by(quarters) %>% count,justify = "left")
+
+```
+
+### Non-Heroin Opioid As any Diagnosis   
+
+
+Count of non-heroin opioid as any diagnosis by quarters:
+
+```{r, echo=F}
+pander(filter(chars_pub2015diag_f, opioid_nh_m == 1) %>% group_by(quarters) %>% count,justify = "left")
+
+```
+
+## Finding All Heroin Overdose
+
+
+### heroin Principal Diagnosis Only  
+
+Count of heroin as main diagnosis by quarters:
+
+```{r, echo=F}
+pander(filter(chars_pub2015diag_f, heroin == 1) %>% group_by(quarters) %>% count,justify = "left")
+
+```
+
+### heroin As any Diagnosis   
+
+Count of heroin as any diagnosis by quarters:
+
+```{r, echo=F}
+pander(filter(chars_pub2015diag_f, heroin_m == 1) %>% group_by(quarters) %>% count,justify = "left")
+
+```
