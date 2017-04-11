@@ -49,7 +49,7 @@ knitr::opts_chunk$set(
 ```  
 
   The introduction of ICD-10 CM in October 2015 and the use of CDC proposed definitions may have artificially lead to an apparent steeper decrease of drug overdose. However a time series decomposition from 2011 to 2016 showed seasonal effects that manifested in a lower incidence of drug overdose in the first and fourth quaters over the years.  
-  In addition this document contrast the results between using the principal diagnosis only and any diagnosis field when capturing the opioid overdose codes for 2016. 
+  In addition this document contrasted the results between using the principal diagnosis only and any diagnosis field when capturing the opioid overdose codes for 2016. 
 
 # Finding All Drug Overdose  
 
