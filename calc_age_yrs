@@ -1,0 +1,8 @@
+calc_age_yrs <- function(date0,date1){
+  d_age <- function(x1,x2) {
+    unclass(difftime(as.Date(date1),as.Date(date0),units ="days"))
+  }
+  age_yrs <- floor(d_age(x1 = date0, x2 = date1)/365)
+  age_yrs
+  
+}
