@@ -1,0 +1,6 @@
+create_fed_fiscal_year <- function(date){
+  #October 1, year(n) to September 30, year(n+1)
+require(lubridate, quietly = T)
+stopifnot(is.Date(date)) # check the date format
+year(date %m+% months(3))
+}
